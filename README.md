@@ -1,2 +1,2 @@
 
-klutz-eureka maven 项目
+注册中心 toy

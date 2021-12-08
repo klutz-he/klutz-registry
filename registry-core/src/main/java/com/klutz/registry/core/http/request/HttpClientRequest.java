@@ -1,6 +1,6 @@
 package com.klutz.registry.core.http.request;
 
-import com.klutz.registry.core.http.HttpClientResponse;
+import com.klutz.registry.core.http.response.HttpClientResponse;
 import com.klutz.registry.core.http.RequestHttpEntity;
 
 import java.io.Closeable;

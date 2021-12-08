@@ -59,12 +59,12 @@ public class InstanceController {
         }
     }
 
-    @PutMapping(value = "/renew")
+    @PutMapping(path = "/renew")
     public ResponseEntity<?> renew(@RequestParam(value = "instanceId") String instanceId,
-                                    @RequestParam(value = "appName") String appName,
+                                    @RequestParam(value = "serviceName") String serviceName,
                                     @RequestHeader(PeerNode.REPLICATION_HEADER) String isReplication){
 
-        boolean success = peerAwareInstanceRegistry.renew(appName,instanceId,"true".equals(isReplication));
+        boolean success = peerAwareInstanceRegistry.renew(serviceName,instanceId,"true".equals(isReplication));
         if( success){
             return ResponseEntity.ok(null);
         }else {

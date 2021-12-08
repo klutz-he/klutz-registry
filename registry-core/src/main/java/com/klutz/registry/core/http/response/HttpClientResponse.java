@@ -1,4 +1,6 @@
-package com.klutz.registry.core.http;
+package com.klutz.registry.core.http.response;
+
+import com.klutz.registry.core.http.Header;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -14,7 +16,7 @@ public interface HttpClientResponse extends Closeable {
 
     InputStream getBody() throws IOException;
 
-    Integer getStatusCode();
+    Integer getStatusCode() throws IOException;
 
     @Override
     void close();

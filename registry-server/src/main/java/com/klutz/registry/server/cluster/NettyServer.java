@@ -1,8 +1,10 @@
 package com.klutz.registry.server.cluster;
 
 import com.klutz.registry.server.processor.Processor;
+import com.klutz.registry.server.protocol.Message;
 import com.klutz.registry.server.protocol.ProtocolType;
 import com.klutz.registry.server.protocol.RegisterDecoder;
+import com.klutz.registry.server.protocol.RegisterEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -25,34 +27,27 @@ import java.util.Map;
  * @author klutz
  */
 @Component
-public class ClusterServer {
+public class NettyServer {
 
-    public static final int MAX_FRAME_LENGTH = 10 * 1024 * 1024;
 
-    @Value("${cluster.port:9527}")
+    @Value("${cluster.port}")
     private Integer clusterPort;
 
     private ServerBootstrap serverBootstrap;
 
-    @Autowired
-    private List<Processor> processors;
-
-    private Map<ProtocolType,Processor> processorMap = new HashMap<>();
-
     @PostConstruct
     public void init() throws Exception{
 
-        for( Processor processor : processors ){
-            processorMap.put(processor.protocolType(),processor);
-        }
+
         serverBootstrap = new ServerBootstrap()
                 .group(new NioEventLoopGroup(1),new NioEventLoopGroup())
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(MAX_FRAME_LENGTH,0,4,0,4));
-                        socketChannel.pipeline().addLast(new RegisterDecoder(processorMap));
+                        socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(Message.MAX_FRAME_LENGTH,0,4,0,4));
+                        socketChannel.pipeline().addLast(new RegisterDecoder());
+                        socketChannel.pipeline().addLast(new RegisterEncoder());
                     }
                 });
         ChannelFuture f = serverBootstrap.bind(clusterPort).sync();

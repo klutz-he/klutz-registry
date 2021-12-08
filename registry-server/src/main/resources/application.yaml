@@ -1,3 +1,7 @@
 
 server:
   port: 8081
+
+cluster:
+  port: 10081
+  nodes: 127.0.0.1:10082

@@ -1,6 +1,8 @@
 package com.klutz.registry.server.protocol;
 
+import com.klutz.registry.server.processor.Dispatcher;
 import com.klutz.registry.server.processor.Processor;
+import com.klutz.registry.server.utils.SpringContextUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,12 +26,6 @@ public class RegisterDecoder extends ByteToMessageDecoder {
 
     private final Logger logger = LoggerFactory.getLogger(RegisterDecoder.class);
 
-    private final Map<ProtocolType,Processor> processorMap;
-
-    public RegisterDecoder(Map<ProtocolType, Processor> processorMap) {
-        this.processorMap = processorMap;
-    }
-
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         int type = in.readInt();
@@ -39,13 +35,11 @@ public class RegisterDecoder extends ByteToMessageDecoder {
             logger.error("unknown protocol type {}",type);
             return;
         }
-        Processor processor = processorMap.get(protocolType);
-        if( processor == null){
-            logger.error("not find protocol processor {}",type);
-            return;
-        }
+
         String body = charSequence.toString();
-        processor.processor(body);
+        Dispatcher dispatcher = SpringContextUtil.getBean(Dispatcher.class);
+        dispatcher.process(protocolType,body);
+
 
     }
 }

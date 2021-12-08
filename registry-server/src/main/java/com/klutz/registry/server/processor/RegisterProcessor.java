@@ -1,6 +1,10 @@
 package com.klutz.registry.server.processor;
 
+import com.klutz.registry.core.entity.InstanceInfo;
+import com.klutz.registry.core.utils.JacksonUtils;
 import com.klutz.registry.server.protocol.ProtocolType;
+import com.klutz.registry.server.service.PeerAwareInstanceRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,8 +19,11 @@ public class RegisterProcessor implements Processor{
         return ProtocolType.REGISTER;
     }
 
+    @Autowired
+    private PeerAwareInstanceRegistry peerAwareInstanceRegistry;
+
     @Override
     public void processor(String body) {
-
+        peerAwareInstanceRegistry.register(JacksonUtils.readValue(body, InstanceInfo.class),false);
     }
 }

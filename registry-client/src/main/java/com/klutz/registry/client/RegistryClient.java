@@ -4,17 +4,15 @@ import com.klutz.registry.client.beat.BeatInfo;
 import com.klutz.registry.client.beat.BeatReactor;
 import com.klutz.registry.core.entity.InstanceInfo;
 import com.klutz.registry.core.exception.KlutzException;
+import com.klutz.registry.core.lifecycle.Closeable;
 
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
 
 /**
  * created on 2021/12/8
  * @author klutz
  */
-public class RegistryClient {
+public class RegistryClient implements Closeable {
 
     private String serverList;
 
@@ -41,5 +39,11 @@ public class RegistryClient {
 
         transportProxy.registerService(instance);
     }
+
+    @Override
+    public void shutdown( )throws Exception {
+        beatReactor.shutdown();
+    }
+
 
 }

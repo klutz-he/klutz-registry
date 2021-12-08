@@ -7,6 +7,7 @@ import com.klutz.registry.core.http.handler.StringResponseHandler;
 import com.klutz.registry.core.http.handler.VoidResponseHandler;
 import com.klutz.registry.core.http.request.HttpClientRequest;
 import com.klutz.registry.core.http.response.HttpClientResponse;
+import com.klutz.registry.core.lifecycle.Closeable;
 import com.klutz.registry.core.utils.HttpUtils;
 import com.klutz.registry.core.utils.JacksonUtils;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import java.net.URI;
  *
  * @author klutz
  */
-public class KlutzRestTemplate {
+public class KlutzRestTemplate implements Closeable  {
 
     private final HttpClientRequest httpClientRequest;
 
@@ -96,4 +97,8 @@ public class KlutzRestTemplate {
         return responseHandler;
     }
 
+    @Override
+    public void shutdown() throws Exception {
+        httpClientRequest.close();
+    }
 }

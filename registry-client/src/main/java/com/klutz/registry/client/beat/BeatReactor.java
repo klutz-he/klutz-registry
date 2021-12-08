@@ -2,6 +2,7 @@ package com.klutz.registry.client.beat;
 
 import com.klutz.registry.client.TransportProxy;
 import com.klutz.registry.core.entity.InstanceInfo;
+import com.klutz.registry.core.lifecycle.Closeable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * created on 2021/12/8
  * @author klutz
  */
-public class BeatReactor {
+public class BeatReactor implements Closeable {
 
     private final Logger logger = LoggerFactory.getLogger(BeatReactor.class);
 
@@ -67,5 +68,10 @@ public class BeatReactor {
             }
             executor.schedule(new BeatTask(beatInfo),beatInfo.getPeriod(), TimeUnit.MILLISECONDS);
         }
+    }
+
+    @Override
+    public void shutdown() throws Exception {
+        executor.shutdown();
     }
 }

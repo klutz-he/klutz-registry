@@ -16,7 +16,7 @@ public interface HttpClientResponse extends Closeable {
 
     InputStream getBody() throws IOException;
 
-    Integer getStatusCode() throws IOException;
+    int getStatusCode() throws IOException;
 
     @Override
     void close();

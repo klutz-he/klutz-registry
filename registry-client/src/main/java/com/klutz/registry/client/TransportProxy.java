@@ -7,8 +7,11 @@ import com.klutz.registry.core.entity.InstanceInfo;
 import com.klutz.registry.core.entity.PeerNode;
 import com.klutz.registry.core.exception.KlutzException;
 import com.klutz.registry.core.http.*;
-import com.klutz.registry.core.http.request.JdkHttpClientRequest;
+import com.klutz.registry.core.http.request.DefaultHttpClientRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,14 +39,18 @@ public class TransportProxy {
                 }
             }
         }
-        klutzRestTemplate = new KlutzRestTemplate(new JdkHttpClientRequest());
+
+        CloseableHttpClient closeableHttpClient = HttpClients.custom().build();
+
+        klutzRestTemplate = new KlutzRestTemplate(new DefaultHttpClientRequest(closeableHttpClient));
     }
 
 
     public void registerService(InstanceInfo instance) {
         Header header = new Header();
         header.addParam(PeerNode.REPLICATION_HEADER,"false");
-        header.addParam(HttpHeaderConstants.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        header.addParam(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+
         reqApi("/instance", "POST", header, Query.EMPTY, instance, Void.class);
     }
 

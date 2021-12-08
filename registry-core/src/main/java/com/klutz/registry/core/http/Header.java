@@ -2,6 +2,7 @@ package com.klutz.registry.core.http;
 
 import com.klutz.registry.core.constant.HttpHeaderConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class Header {
     }
 
     public String getCharset() {
-        String acceptCharset = getValue(HttpHeaderConstants.ACCEPT_CHARSET);
+        String acceptCharset = getValue(HttpHeaders.ACCEPT_CHARSET);
         if(StringUtils.isBlank(acceptCharset)){
             acceptCharset = "UTF-8";
         }

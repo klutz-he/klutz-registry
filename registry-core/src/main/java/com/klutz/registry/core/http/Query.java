@@ -15,16 +15,12 @@ public class Query {
 
     private boolean isEmpty = true;
 
-    public static final Query EMPTY = Query.newInstance();
+    public static final Query EMPTY = new Query();
 
     private Map<String, Object> params;
 
     public Query() {
         params = new LinkedHashMap<String, Object>();
-    }
-
-    public static Query newInstance() {
-        return new Query();
     }
 
     public Query addParam(String key, Object value) {

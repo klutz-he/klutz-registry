@@ -37,7 +37,4 @@ public class HttpRestResult<T>{
         return data;
     }
 
-    public boolean isOk() {
-        return statusCode == 200;
-    }
 }

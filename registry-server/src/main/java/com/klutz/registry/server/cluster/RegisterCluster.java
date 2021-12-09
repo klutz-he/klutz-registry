@@ -1,11 +1,16 @@
 package com.klutz.registry.server.cluster;
 
 import com.klutz.registry.core.entity.InstanceInfo;
+import com.klutz.registry.core.entity.ServerInfo;
+import com.klutz.registry.core.utils.ClusterUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,13 +29,12 @@ public class RegisterCluster {
     public void init() throws Exception{
         String[] split = nodes.split(",");
         for( String node : split){
-            String[] ipAndPort = node.split(":");
-            nettyClients.add(new NettyClient(ipAndPort[0],Integer.valueOf(ipAndPort[1])));
+            ServerInfo serverInfo = ClusterUtils.resolve(node);
+            nettyClients.add(new NettyClient(Collections.singletonList(serverInfo)));
         }
 
         for( NettyClient nettyClient : nettyClients){
             nettyClient.init();
-            nettyClient.connect();
         }
     }
 

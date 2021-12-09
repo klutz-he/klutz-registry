@@ -68,7 +68,7 @@ public class TransportProxy implements Closeable {
         //设置为表单
         Header header = new Header();
         header.addParam(PeerNode.REPLICATION_HEADER,"false");
-        header.addParam(HttpHeaderConstants.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
+        header.addParam(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
 
         HttpRestResult<Void> restResult = reqApi("/instance/renew", "PUT", header, Query.EMPTY, params, Void.class);
         int statusCode = restResult.getStatusCode();
@@ -110,8 +110,21 @@ public class TransportProxy implements Closeable {
         }
     }
 
+    public void deregister(InstanceInfo instanceInfo) {
+        Header header = new Header();
+        header.addParam(PeerNode.REPLICATION_HEADER,"false");
+        header.addParam(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED);
+
+        Map<String,String> params = new HashMap<>();
+        params.put("instanceId",instanceInfo.getInstanceId());
+        params.put("appName",instanceInfo.getAppName());
+
+        reqApi("/instance", "DELETE_LARGE", header, Query.EMPTY, params, Void.class);
+    }
+
     @Override
     public void shutdown() throws Exception {
         klutzRestTemplate.shutdown();
     }
+
 }

@@ -37,4 +37,15 @@ public class ClientTest {
         TimeUnit.SECONDS.sleep(100);
     }
 
+    @Test
+    public void deRegister() throws Exception{
+        InstanceInfo instanceInfo = new InstanceInfo();
+        instanceInfo.setInstanceId("user-001");
+        instanceInfo.setAppName("user");
+        instanceInfo.setIp("127.0.0.1");
+        instanceInfo.setPort("8085");
+        instanceInfo.setExpireSeconds(10);
+
+        registryClient.deregister(instanceInfo);
+    }
 }

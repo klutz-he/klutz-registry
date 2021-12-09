@@ -23,7 +23,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractPeerAwareInstanceRegi
     @Override
     public void register(InstanceInfo info, boolean isReplication) {
         super.register(info, isReplication);
-        if(isReplication) {
+        if(!isReplication) {
             registerCluster.register(info);
         }
     }

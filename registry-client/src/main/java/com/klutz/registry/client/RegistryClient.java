@@ -4,7 +4,6 @@ import com.klutz.registry.client.beat.BeatInfo;
 import com.klutz.registry.client.beat.BeatReactor;
 import com.klutz.registry.core.entity.InstanceInfo;
 import com.klutz.registry.core.exception.KlutzException;
-import com.klutz.registry.core.lifecycle.Closeable;
 
 import java.util.Properties;
 
@@ -12,9 +11,7 @@ import java.util.Properties;
  * created on 2021/12/8
  * @author klutz
  */
-public class RegistryClient implements Closeable {
-
-    private String serverList;
+public class RegistryClient implements KlutzClient {
 
     private TransportProxy transportProxy;
 
@@ -25,7 +22,7 @@ public class RegistryClient implements Closeable {
     }
 
     private void init(Properties properties) throws KlutzException {
-        serverList = properties.getProperty(PropertyKeyConst.SERVER_ADDR);
+        String serverList = properties.getProperty(PropertyKeyConst.SERVER_ADDR);
 
         transportProxy = new TransportProxy(serverList);
         beatReactor = new BeatReactor(transportProxy);
@@ -41,9 +38,13 @@ public class RegistryClient implements Closeable {
     }
 
     @Override
+    public void deregister(InstanceInfo instanceInfo) {
+        transportProxy.deregister(instanceInfo);
+    }
+
+    @Override
     public void shutdown( )throws Exception {
         beatReactor.shutdown();
     }
-
 
 }

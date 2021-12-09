@@ -18,7 +18,7 @@ public class BeatReactor implements Closeable {
 
     private final Logger logger = LoggerFactory.getLogger(BeatReactor.class);
 
-    private TransportProxy transportProxy;
+    private final TransportProxy transportProxy;
 
     private ScheduledThreadPoolExecutor executor;
 
@@ -49,7 +49,7 @@ public class BeatReactor implements Closeable {
 
     class BeatTask implements Runnable{
 
-        private BeatInfo beatInfo;
+        private final BeatInfo beatInfo;
 
         public BeatTask(BeatInfo beatInfo) {
             this.beatInfo = beatInfo;

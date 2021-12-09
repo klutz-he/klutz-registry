@@ -18,9 +18,10 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j-api.version>1.7.30</slf4j-api.version>
-        <jackson-core.version>2.10.2</jackson-core.version>
-        <jackson-databind.version>2.10.4</jackson-databind.version>
+        <jackson-core.version>2.11.4</jackson-core.version>
+        <jackson-databind.version>2.11.4</jackson-databind.version>
         <commons-lang3.version>3.11</commons-lang3.version>
         <commons-io.version>2.2</commons-io.version>
         <httpclient.version>4.5.13</httpclient.version>
